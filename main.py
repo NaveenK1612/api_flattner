@@ -12,4 +12,4 @@ if __name__ == "__main__":
     else:
         variable_dict = construct_base_structure(results)
         primary, variable_dict = generate_results(results, variable_dict)
-        generate_files(variable_dict, primary)
+        generate_files(variable_dict, primary, cloud_mode=True)

@@ -95,11 +95,12 @@ def generate_results(results, variable_dict):
     return primary, variable_dict
 
 
-def generate_files(variable_dict, primary):
+def generate_files(variable_dict, primary, cloud_mode=False):
     """
     Load results in a Dataframe and convert to CSV files. Append if the file already exists otherwise create.
     :param variable_dict: Structured list of objects
     :param primary: Main list
+    :param cloud_mode: By default files will be generated in local otherwise in the tmp directory.
     """
     for key in variable_dict:
         df = pd.DataFrame(variable_dict[key])
@@ -107,13 +108,11 @@ def generate_files(variable_dict, primary):
         if file_exists:
             df1 = pd.read_csv(f'{key}.csv')
             df = pd.concat([df, df1])
-        df.to_csv("" + key + ".csv", index=False)
+        df.to_csv("/tmp/" if cloud_mode else "" + key + ".csv", index=False)
 
     df = pd.DataFrame(primary)
     file_exists = os.path.exists('primary.csv')
     if file_exists:
         df1 = pd.read_csv(f'primary.csv')
         df = pd.concat([df, df1])
-    df.to_csv("primary.csv", index=False)
-
-
+    df.to_csv("/tmp/primary.csv" if cloud_mode else "primary.csv", index=False)
